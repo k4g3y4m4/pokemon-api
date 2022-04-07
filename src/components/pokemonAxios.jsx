@@ -1,31 +1,27 @@
-import { useEffect, useState } from "react";
+import {useState,useEffect} from 'react';
+import axios from 'axios';
 
-const Pokemon = (props) => {
+
+const PokemonAxios = () => {
     const [statusFetch, setStatusFetch] = useState(false);
     const [pokemon, setPokemon] = useState([]);
 
-    
-    //on click on button and fetch data from API
     const HandlestatusFetch = () => {
         setStatusFetch(true);
     }
 
     useEffect(() => {
         if(statusFetch){
-            fetch('https://pokeapi.co/api/v2/pokedex/1/')
-                .then(response => response.json())
-                .then(response => setPokemon(response.pokemon_entries))
-                .catch(error => console.log(error))
-        };
+            axios.get('https://pokeapi.co/api/v2/pokedex/1/')
+                .then(response => {setPokemon(response.data.pokemon_entries)})
+            };
     }, [statusFetch]);
 
-
-    //generate a button to get all pokemon
     return (
         <div>
             <h1>Pokemon</h1>
             <button onClick={HandlestatusFetch} className="btn btn-success">Fetch Pokemon</button>
-        
+
             <ul>
                 {pokemon.map(pokemon => (
                     <li>
@@ -35,7 +31,6 @@ const Pokemon = (props) => {
             </ul>
         </div>
     );
-
 }
 
-export default Pokemon;
+export default PokemonAxios;
